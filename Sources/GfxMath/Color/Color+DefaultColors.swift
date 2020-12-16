@@ -1,22 +1,22 @@
 extension Color {
  
-    public static let Red = Color(255, 0, 0, 255)
+    public static let red = Color(255, 0, 0, 255)
 
-    public static let Green = Color(0, 255, 0, 255)
+    public static let green = Color(0, 255, 0, 255)
 
-    public static let Yellow = Color(255, 255, 0, 255)
+    public static let yellow = Color(255, 255, 0, 255)
 
-    public static let Orange = Color(255, 150, 0, 255)
+    public static let orange = Color(255, 150, 0, 255)
 
-    public static let Blue = Color(0, 0, 255, 255)
+    public static let blue = Color(0, 0, 255, 255)
 
-    public static let LightBlue = Color(180, 180, 255, 255)
+    public static let lightBlue = Color(180, 180, 255, 255)
 
-    public static let Black = Color(0, 0, 0, 255)
+    public static let black = Color(0, 0, 0, 255)
     
-    public static let Grey = Color(128, 128, 128, 255)
+    public static let grey = Color(128, 128, 128, 255)
 
-    public static let White = Color(255, 255, 255, 255)
+    public static let white = Color(255, 255, 255, 255)
 
-    public static let Transparent = Color(0, 0, 0, 0)
+    public static let transparent = Color(0, 0, 0, 0)
 }
