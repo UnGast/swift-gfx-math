@@ -181,6 +181,12 @@ public extension VectorProtocol where Element: BinaryInteger {
     }
 }
 
+public extension VectorProtocol {
+    init<Other: VectorProtocol>(_ other: Other) where Other.Element == Element {
+        self.init(other.elements)
+    }
+}
+
 public extension VectorProtocol where Element: FloatingPoint {
     
     @available(*, deprecated, message: "Use .magnitude instead.")
