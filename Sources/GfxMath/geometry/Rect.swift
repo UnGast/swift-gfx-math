@@ -1,7 +1,7 @@
 import Foundation
 
 /// Axis aligned rect in 2 coordinate space.
-public struct Rect<E: BinaryFloatingPoint>: Equatable, Hashable {
+public struct Rect<E: Numeric & Hashable & Comparable>: Equatable, Hashable {
     public var min: Vector2<E>
     public var max: Vector2<E> {
         get {
@@ -32,10 +32,6 @@ public struct Rect<E: BinaryFloatingPoint>: Equatable, Hashable {
             size.height = newValue
         }
     }
-    
-    public var center: Vector2<E> {
-        min + Vector2(size) / 2
-    }
 
     public var area: E {
         size.width * size.height
@@ -48,17 +44,13 @@ public struct Rect<E: BinaryFloatingPoint>: Equatable, Hashable {
     }
 
     public init(max: Vector2<E>, size: Size2<E>) {
-        self.min = max - Vector2(size)
+        self.min = max - Vector2<E>(size)
         self.size = size
     }
 
     public init(min: Vector2<E>, max: Vector2<E>/*, layout: VectorLayout2<Vector2<E>> = .bottomLeftToTopRight*/) {
         self.min = min
         self.size = Size2(max - min)
-    }
-
-    public init(center: Vector2<E>, size: Size2<E>) {
-        self.init(min: Vector2<E>(center.x - size.width / 2, center.y - size.height / 2), size: size)
     }
 
     public var vertices: [Vector2<E>] {
@@ -116,6 +108,21 @@ public struct Rect<E: BinaryFloatingPoint>: Equatable, Hashable {
         return false
     }
 
+    public func intersection(with otherRect: Rect<E>) -> Rect<E>? {
+        var xs = Set([min.x, max.x, otherRect.min.x, otherRect.max.x])
+        var ys = Set([min.y, max.y, otherRect.min.y, otherRect.max.y])
+        xs = xs.filter { min.x <= $0 && max.x >= $0 && otherRect.min.x <= $0 && otherRect.max.x >= $0 }
+        ys = ys.filter { min.y <= $0 && max.y >= $0 && otherRect.min.y <= $0 && otherRect.max.y >= $0 }
+
+        if xs.count < 2 || ys.count < 2 {
+            return nil
+        }
+
+        let xsSorted = xs.sorted()
+        let ysSorted = ys.sorted()
+        return Rect<E>(min: Vector2<E>(xsSorted[0], ysSorted[0]), max: Vector2<E>(xsSorted[1], ysSorted[1]))
+    }
+
     public mutating func translate(_ amount: Vector2<E>) {
         self.min += amount
     }
@@ -127,6 +134,17 @@ public struct Rect<E: BinaryFloatingPoint>: Equatable, Hashable {
     }
 }
 
+extension Rect where E: FloatingPoint {
+    public var center: Vector2<E> {
+        min + Vector2<E>(size) / 2
+    }
+
+    public init(center: Vector2<E>, size: Size2<E>) {
+        self.init(min: Vector2<E>(center.x - size.width / 2, center.y - size.height / 2), size: size)
+    }
+}
+
 /// An axis aligned Rect in 2 coordinate space.
 /// - SeeAlso: Rect
 public typealias DRect = Rect<Double>
+public typealias IRect = Rect<Int>
