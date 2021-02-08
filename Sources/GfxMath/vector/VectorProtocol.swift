@@ -1,6 +1,8 @@
 import Foundation
 
-public protocol VectorProtocol: MatrixProtocol {}
+public protocol VectorProtocol: MatrixProtocol {
+  associatedtype Dimension: MatrixDimension
+}
 
 extension VectorProtocol {
   @inlinable public var description: String {

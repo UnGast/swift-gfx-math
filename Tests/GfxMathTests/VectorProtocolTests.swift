@@ -2,7 +2,7 @@ import XCTest
 import GfxMath
 
 class VectorProtocolTests: XCTestCase {
-  func testScalarComparison() {
+  func testVectorScalarComparison() {
     var vector = DVec2(2, 5)
     XCTAssertTrue(vector < 6)
     XCTAssertFalse(vector < 5)
@@ -25,7 +25,37 @@ class VectorProtocolTests: XCTestCase {
     XCTAssertFalse(vector > 4)
   }
 
+  func testVectorVectorComparison() {
+    var vector1 = DVec2(1, 2)
+    var vector2 = DVec2(3, 4)
+    XCTAssertTrue(vector1 < vector2)
+    XCTAssertTrue(vector1 <= vector2)
+    XCTAssertFalse(vector1 > vector2)
+    XCTAssertFalse(vector1 >= vector2)
+    XCTAssertTrue(vector2 > vector1)
+    XCTAssertTrue(vector2 >= vector1)
+    XCTAssertFalse(vector2 < vector1)
+    XCTAssertFalse(vector2 <= vector1)
+
+    vector1 = DVec2(1, 1)
+    vector2 = DVec2(1, 2)
+    XCTAssertTrue(vector1 <= vector2)
+    XCTAssertFalse(vector1 < vector2)
+    XCTAssertFalse(vector1 >= vector2)
+    XCTAssertTrue(vector2 >= vector1)
+    XCTAssertFalse(vector2 > vector1)
+    XCTAssertFalse(vector2 <= vector1)
+
+    vector1 = DVec2(1, 1)
+    vector2 = DVec2(1, 1)
+    XCTAssertFalse(vector1 < vector2)
+    XCTAssertFalse(vector1 > vector2)
+    XCTAssertTrue(vector1 <= vector2)
+    XCTAssertTrue(vector1 >= vector2)
+  }
+
   static var allTests = [
-    ("testScalarComparison", testScalarComparison)
+    ("testVectorScalarComparison", testVectorScalarComparison),
+    ("testVectorVectorComparison", testVectorVectorComparison)
   ]
 }

@@ -1,21 +1,16 @@
 import Foundation
 
 public struct Vector<E: Numeric & Hashable>: VectorProtocol {
-    
     public typealias Element = E
+    public typealias Dimension = Dim_nx1
     
     public var rows: Int
-    
     public var cols: Int
-    
     public var elements: [Element]
     
     public init() {
-        
         self.rows = 0
-        
         self.cols = 1
-        
         self.elements = [Element](repeating: 0, count: 3)
     }
 }
@@ -30,29 +25,24 @@ public protocol Vector2Protocol: VectorProtocol {
 }
 
 public extension Vector2Protocol {
-    
+    typealias Dimension = Dim_2x1
+
     @inlinable var x: Element {
-        
         get {
-            
             return elements[0]
         }
         
         set {
-            
             elements[0] = newValue
         }
     }
     
     @inlinable var y: Element {
-        
         get {
-            
             return elements[1]
         }
         
         set {
-            
             elements[1] = newValue
         }
     }
@@ -122,11 +112,12 @@ public typealias IVec2 = Vector2<Int>
 
 
 
-public protocol Vector3Protocol: Vector2Protocol {
+public protocol Vector3Protocol: VectorProtocol {
 
 }
 
 public extension Vector3Protocol {
+    typealias Dimension = Dim_3x1
 
     init(_ x: Element, _ y: Element, _ z: Element) {
         
@@ -151,40 +142,31 @@ public extension Vector3Protocol {
     }
 
     @inlinable var x: Element {
-       
         get {
-       
             return elements[0]
         }
        
         set {
-        
             elements[0] = newValue
         }
     }
 
     @inlinable var y: Element {
-        
         get {
-            
             return elements[1]
         }
         
         set {
-            
             elements[1] = newValue
         }
     }
 
     @inlinable var z: Element {
-        
         get {
-            
             return elements[2]
         }
         
         set {
-            
             elements[2] = newValue
         }
     }
@@ -230,27 +212,55 @@ public typealias IVec3 = Vector3<Int>
 
 
 
-public protocol Vector4Protocol: Vector3Protocol {
+public protocol Vector4Protocol: VectorProtocol {
     
 }
 
 public extension Vector4Protocol {
-    
-    @inlinable var w: Element {
-        
+    typealias Dimension = Dim_4x1
+
+    @inlinable var x: Element {
         get {
-            
+            return elements[0]
+        }
+       
+        set {
+            elements[0] = newValue
+        }
+    }
+
+    @inlinable var y: Element {
+        get {
+            return elements[1]
+        }
+        
+        set {
+            elements[1] = newValue
+        }
+    }
+
+    @inlinable var z: Element {
+        get {
+            return elements[2]
+        }
+        
+        set {
+            elements[2] = newValue
+        }
+    }
+
+    @inlinable var w: Element {
+        get {
             return elements[3]
         }
         
         set {
-        
             elements[3] = newValue
         }
     }
 }
 
-public struct Vector4<E: Numeric & Hashable>: VectorProtocol {
+public struct Vector4<E: Numeric & Hashable>: Vector4Protocol {
     
     public typealias Element = E
     

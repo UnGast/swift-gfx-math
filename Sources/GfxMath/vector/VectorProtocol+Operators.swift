@@ -78,6 +78,42 @@ extension VectorProtocol where Element: Comparable {
   @inlinable public static func >= (lhs: Self, rhs: Element) -> Bool {
     lhs.elements.allSatisfy { $0 >= rhs }
   }
+
+  @inlinable public static func < <R: VectorProtocol>(lhs: Self, rhs: R) -> Bool where R.Element == Self.Element, R.Dimension == Self.Dimension {
+    for i in 0..<lhs.rows {
+      if !(lhs[i] < rhs[i]) {
+        return false
+      }
+    }
+    return true
+  }
+
+  @inlinable public static func <= <R: VectorProtocol>(lhs: Self, rhs: R) -> Bool where R.Element == Self.Element, R.Dimension == Self.Dimension {
+    for i in 0..<lhs.rows {
+      if !(lhs[i] <= rhs[i]) {
+        return false
+      }
+    }
+    return true
+  }
+
+  @inlinable public static func > <R: VectorProtocol>(lhs: Self, rhs: R) -> Bool where R.Element == Self.Element, R.Dimension == Self.Dimension {
+    for i in 0..<lhs.rows {
+      if !(lhs[i] > rhs[i]) {
+        return false
+      }
+    }
+    return true
+  }
+
+  @inlinable public static func >= <R: VectorProtocol>(lhs: Self, rhs: R) -> Bool where R.Element == Self.Element, R.Dimension == Self.Dimension {
+    for i in 0..<lhs.rows {
+      if !(lhs[i] >= rhs[i]) {
+        return false
+      }
+    }
+    return true
+  }
 }
 
 extension VectorProtocol where Element: FloatingPoint {
