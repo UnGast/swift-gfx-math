@@ -4,6 +4,7 @@ import XCTest
 public func allTests() -> [XCTestCaseEntry] {
     return [
         testCase(GfxMathTests.allTests),
+        testCase(VectorProtocolTests.allTests)
     ]
 }
 #endif
