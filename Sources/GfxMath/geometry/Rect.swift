@@ -88,22 +88,32 @@ public struct Rect<E: Numeric & Hashable & Comparable>: Equatable, Hashable {
         }
     }*/
 
-    public func contains(point: Vector2<E>) -> Bool {
-        point.x >= min.x && point.x <= max.x && point.y >= min.y && point.y <= max.y
+    /**
+    - Parameter includeOnEdge: Controls whether a point that is located on an edge or corner counts as inside or not.
+    */
+    public func contains(point: Vector2<E>, includeOnEdge: Bool = true) -> Bool {
+        if includeOnEdge {
+            return point.x >= min.x && point.x <= max.x && point.y >= min.y && point.y <= max.y
+        } else {
+            return point.x > min.x && point.x < max.x && point.y > min.y && point.y < max.y
+        }
     }
 
-    public func intersects(_ otherRect: Rect<E>) -> Bool {
+    /** 
+    - Parameter includeSharedEdge: Set whether shared edges (or corners) count as intersection or not.
+    */
+    public func intersects(_ otherRect: Rect<E>, includeSharedEdge: Bool = true) -> Bool {
         for ownVertex in self.vertices {
-            if otherRect.contains(point: ownVertex) {
+            if otherRect.contains(point: ownVertex, includeOnEdge: includeSharedEdge) {
                 return true
             }
         }
 
         for otherVertex in otherRect.vertices {
-            if contains(point: otherVertex) {
+            if contains(point: otherVertex, includeOnEdge: includeSharedEdge) {
                 return true
             }
-        }           
+        } 
 
         return false
     }

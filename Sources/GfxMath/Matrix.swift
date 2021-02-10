@@ -229,9 +229,9 @@ public extension MatrixProtocol where Element: FloatingPoint {
 
 public extension MatrixProtocol where Element: Comparable {
     
-    @inlinable func max() -> Element? {
+    @inlinable func max() -> Element {
         
-        return elements.max()
+        return elements.max()!
     }
 }
 
