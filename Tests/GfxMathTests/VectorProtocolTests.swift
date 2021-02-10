@@ -54,8 +54,77 @@ class VectorProtocolTests: XCTestCase {
     XCTAssertTrue(vector1 >= vector2)
   }
 
+  func testVectorAddition() {
+    let vector1 = DVec2(40, 10)
+    let vector2 = DVec2(-10, -15)
+    var vector3 = DVec2.zero
+    vector3 += vector1
+    vector3 += vector2
+    XCTAssertEqual(vector1 + vector2, DVec2(30, -5))
+    XCTAssertEqual(vector3, DVec2(30, -5))
+  }
+
+  func testVectorSubtraction() {
+    let vector1 = DVec2(50, 40)
+    let vector2 = DVec2(10, -30)
+    var vector3 = DVec2.zero
+    vector3 -= vector1
+    vector3 -= vector2
+    XCTAssertEqual(vector1 - vector2, DVec2(40, 70))
+    XCTAssertEqual(vector3, DVec2(-60, -10))
+  }
+
+  func testVectorMultiplication() {
+    let vector1 = DVec2(10, 20)
+    let vector2 = DVec2(0, 0)
+    let vector3 = DVec2(5, 6)
+    var vector4 = DVec2(1, 1)
+
+    vector4 *= vector1
+    XCTAssertEqual(vector4, DVec2(10, 20))
+
+    vector4 *= 5
+    XCTAssertEqual(vector4, DVec2(50, 100))
+
+    vector4 *= vector2
+    XCTAssertEqual(vector4, .zero)  
+
+    XCTAssertEqual(vector1 * vector2, .zero)
+    XCTAssertEqual(vector1 * vector3, DVec2(50, 120))
+    XCTAssertEqual(vector1 * vector3 * 2, DVec2(100, 240))
+  }
+
+  func testVectorDivision() {
+    let vector1 = DVec2(40, 70)
+    let vector2 = DVec2(4, 2)
+    let vector3 = DVec2(1, 1)
+    let vector4 = DVec2.zero
+    var vector5 = DVec2(80, 90)
+
+    vector5 /= vector2
+    XCTAssertEqual(vector5, DVec2(20, 45))
+
+    vector5 /= vector3
+    XCTAssertEqual(vector5, DVec2(20, 45))
+
+    vector5 /= 2
+    XCTAssertEqual(vector5, DVec2(10, 22.5))
+
+    vector5 /= vector4
+    XCTAssertEqual(vector5, DVec2.infinity)
+
+    XCTAssertEqual(vector1 / vector2, DVec2(10, 35))
+    XCTAssertEqual(vector1 / 2, DVec2(20, 35))
+    XCTAssertEqual(vector1 / vector3, vector1)
+    XCTAssertEqual(vector1 / vector4, .infinity)
+  }
+
   static var allTests = [
     ("testVectorScalarComparison", testVectorScalarComparison),
-    ("testVectorVectorComparison", testVectorVectorComparison)
+    ("testVectorVectorComparison", testVectorVectorComparison),
+    ("testVectorAddition", testVectorAddition),
+    ("testVectorSubtraction", testVectorSubtraction),
+    ("testVectorMultiplication", testVectorMultiplication),
+    ("testVectorDivision", testVectorDivision)
   ]
 }
