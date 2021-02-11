@@ -30,11 +30,11 @@ class RectTests: XCTestCase {
     intersection = rect1.intersection(with: rect2)
     XCTAssertNil(intersection)
 
-    // no intersection with shader edge
+    // no intersection, have shared edge
     rect1 = DRect(min: DVec2(1, 1), max: DVec2(2, 2))
     rect2 = DRect(min: DVec2(2, 1), max: DVec2(4, 2))
     intersection = rect1.intersection(with: rect2)
-    XCTAssertNil(intersection)
+    XCTAssertEqual(intersection, DRect(min: DVec2(2, 1), size: DSize2(0, 1)))
 
     // same rects
     rect1 = DRect(min: DVec2(1, 1), max: DVec2(2, 2))

@@ -8,7 +8,7 @@ extension VectorProtocol {
   }
 
   @inlinable public static func += (lhs: inout Self, rhs: Self) {
-    for i in 0..<Swift.min(lhs.rows, rhs.rows) {
+    for i in 0..<lhs.rows {
       lhs[i] += rhs[i]
     }
   }
@@ -19,6 +19,18 @@ extension VectorProtocol {
     return result 
   }
 
+  @inlinable public static func += <O: VectorProtocol>(lhs: inout Self, rhs: O) where O.Dimension == Dimension, O.Element == Element {
+    for i in 0..<lhs.rows {
+      lhs[i] += rhs[i]
+    }
+  }
+
+  @inlinable public static func + <O: VectorProtocol>(lhs: inout Self, rhs: O) -> Self where O.Dimension == Dimension, O.Element == Element {
+    var result = lhs
+    result += rhs
+    return result
+  }
+
   @inlinable public static func -= (lhs: inout Self, rhs: Self) {
     for i in 0..<Swift.min(lhs.rows, rhs.rows) {
       lhs[i] -= rhs[i]
@@ -26,6 +38,18 @@ extension VectorProtocol {
   }
 
   @inlinable public static func - (lhs: Self, rhs: Self) -> Self {
+    var result = lhs
+    result -= rhs
+    return result
+  }
+
+  @inlinable public static func -= <O: VectorProtocol>(lhs: inout Self, rhs: O) where O.Dimension == Dimension, O.Element == Element {
+    for i in 0..<lhs.rows {
+      lhs[i] -= rhs[i]
+    }
+  }
+
+  @inlinable public static func - <O: VectorProtocol>(lhs: inout Self, rhs: O) -> Self where O.Dimension == Dimension, O.Element == Element {
     var result = lhs
     result -= rhs
     return result

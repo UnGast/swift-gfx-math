@@ -88,49 +88,22 @@ public struct Rect<E: Numeric & Hashable & Comparable>: Equatable, Hashable {
         }
     }*/
 
-    /**
-    - Parameter includeOnEdge: Controls whether a point that is located on an edge or corner counts as inside or not.
-    */
-    public func contains(point: Vector2<E>, includeOnEdge: Bool = true) -> Bool {
-        if includeOnEdge {
-            return point.x >= min.x && point.x <= max.x && point.y >= min.y && point.y <= max.y
-        } else {
-            return point.x > min.x && point.x < max.x && point.y > min.y && point.y < max.y
-        }
+    public func contains(point: Vector2<E>) -> Bool {
+        return point.x >= min.x && point.x <= max.x && point.y >= min.y && point.y <= max.y
     }
 
-    /** 
-    - Parameter includeSharedEdge: Set whether shared edges (or corners) count as intersection or not.
-    */
-    public func intersects(_ otherRect: Rect<E>, includeSharedEdge: Bool = true) -> Bool {
-        for ownVertex in self.vertices {
-            if otherRect.contains(point: ownVertex, includeOnEdge: includeSharedEdge) {
-                return true
-            }
-        }
-
-        for otherVertex in otherRect.vertices {
-            if contains(point: otherVertex, includeOnEdge: includeSharedEdge) {
-                return true
-            }
-        } 
-
-        return false
+    public func intersects(_ otherRect: Rect<E>) -> Bool {
+        return !(min.x > otherRect.max.x || max.x < otherRect.min.x || min.y > otherRect.max.y || max.y < otherRect.min.y)
     }
 
     public func intersection(with otherRect: Rect<E>) -> Rect<E>? {
-        var xs = Set([min.x, max.x, otherRect.min.x, otherRect.max.x])
-        var ys = Set([min.y, max.y, otherRect.min.y, otherRect.max.y])
-        xs = xs.filter { min.x <= $0 && max.x >= $0 && otherRect.min.x <= $0 && otherRect.max.x >= $0 }
-        ys = ys.filter { min.y <= $0 && max.y >= $0 && otherRect.min.y <= $0 && otherRect.max.y >= $0 }
-
-        if xs.count < 2 || ys.count < 2 {
-            return nil
+        if intersects(otherRect) {
+            return Rect(
+                min: Vector2(Swift.max(min.x, otherRect.min.x), Swift.max(min.y, otherRect.min.y)),
+                max: Vector2(Swift.min(max.x, otherRect.max.x), Swift.min(max.y, otherRect.max.y))
+            )
         }
-
-        let xsSorted = xs.sorted()
-        let ysSorted = ys.sorted()
-        return Rect<E>(min: Vector2<E>(xsSorted[0], ysSorted[0]), max: Vector2<E>(xsSorted[1], ysSorted[1]))
+        return nil
     }
 
     public mutating func translate(_ amount: Vector2<E>) {
