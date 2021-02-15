@@ -1,10 +1,21 @@
 public enum DTransform2 {
   case translate(DVec2)
+  case scale(DVec2, origin: DVec2? = nil)
 
   public func transform(point: DVec2) -> DVec2 {
     switch self {
     case let .translate(translation):
       return point + translation
+    case let .scale(scale, origin):
+      var result = point
+      if let origin = origin {
+        result -= origin
+      }
+      result *= scale
+      if let origin = origin {
+        result += origin
+      }
+      return result
     }
   }
 }
