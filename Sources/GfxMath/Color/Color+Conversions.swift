@@ -114,8 +114,6 @@ extension Color {
             }
         }
 
-        return RGB(r: UInt8(r * 255), g: UInt8(g * 255), b: UInt8(b * 255))
+        return RGB(r: UInt8(min(255, r * 255)), g: UInt8(min(255, g * 255)), b: UInt8(min(255, b * 255)))
     }
-
-
 }
