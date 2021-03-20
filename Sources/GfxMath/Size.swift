@@ -12,46 +12,35 @@ public protocol Size2Protocol: Vector2Protocol {
 
 }
 
-public extension Size2Protocol {
+extension Size2Protocol {
+  public var width: Element {
+    get { x }
+    set { x = newValue }
+  }
 
-    var width: Element {
-
-        get {
-
-            return x
-        }
-
-        set {
-
-            x = newValue
-        }
-    }
-
-    var height: Element {
-
-        get {
-
-            return y
-        }
-
-        set {
-
-            y = newValue
-        }
-    }
+  public var height: Element {
+    get { y }
+    set { y = newValue }
+  }
 }
 
-public typealias Size2<E: Numeric & Hashable> = Vector2<E>
+public struct Size2<E: Numeric & Hashable>: Size2Protocol {
+  public typealias Element = E
+  public let rows: Int = 2
+  public let cols: Int = 1
+  public var elements: [Element]
 
-extension Size2 {
-    public var width: E {
-        get { x }
-        set { x = newValue }
-    }
-    public var height: E {
-        get { y }
-        set { y = newValue }
-    }
+  public init(_ elements: [Element]) {
+    self.elements = elements
+  }
+
+  public init(_ x: Element, _ y: Element) {
+    self.init([x, y])
+  }
+
+  public init(x: Element, y: Element) {
+    self.init([x, y])
+  }
 }
 
 public typealias DSize2 = Size2<Double>
