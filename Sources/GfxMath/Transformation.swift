@@ -23,11 +23,11 @@ public struct Transformation<E: FloatingPointGenericMath> {
     public var matrix: Matrix4<E>
 
     public init() {
-        self.translation = Vector3<E>()
+        self.translation = Vector3<E>.zero
         self.scaling = Vector3<E>([1, 1, 1])
         self.rotationAxis = Vector3<E>([1, 1, 1])
         self.rotationAngle = E.zero
-        self.matrix = Matrix4<E>()
+        self.matrix = Matrix4<E>.zero
         recalc()
     }
 
@@ -36,7 +36,7 @@ public struct Transformation<E: FloatingPointGenericMath> {
         self.scaling = scaling
         self.rotationAxis = rotationAxis
         self.rotationAngle = rotationAngle
-        self.matrix = Matrix4<E>()
+        self.matrix = Matrix4<E>.zero
         recalc()
     }
 

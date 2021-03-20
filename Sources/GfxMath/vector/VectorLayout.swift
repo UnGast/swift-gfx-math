@@ -4,6 +4,7 @@ public struct VectorLayout1<VectorProtocol: VectorProtocol> {
 }*/
 
 // TODO: is this needed? or can just go by convention?
+/*
 public struct VectorLayout2<VectorProtocol: Vector2Protocol> {
     public let up: VectorProtocol
     public let right: VectorProtocol
@@ -26,4 +27,4 @@ public struct VectorLayout2<VectorProtocol: Vector2Protocol> {
     public static var defaultLayout: Self {
         bottomLeftToTopRight
     }
-}
+}*/

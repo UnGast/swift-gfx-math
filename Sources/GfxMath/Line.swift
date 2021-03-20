@@ -108,7 +108,7 @@ public struct AnyLine<V: VectorProtocol>: Line where V.Element: BinaryFloatingPo
     public var direction: V
     
     public init() {
-        self.point = V()
-        self.direction = V()
+        self.point = V.zero
+        self.direction = V.zero
     }
 }

@@ -1,344 +1,259 @@
 import Foundation
 
 public struct Vector<E: Numeric & Hashable>: VectorProtocol {
-    public typealias Element = E
-    public typealias Dimension = Dim_nx1
-    
-    public var rows: Int
-    public var cols: Int
-    public var elements: [Element]
-    
-    public init() {
-        self.rows = 0
-        self.cols = 1
-        self.elements = [Element](repeating: 0, count: 3)
-    }
+  public typealias Element = E
+  public typealias Dimension = Dim_nx1
+
+  public let rows: Int
+  public let cols: Int = 1
+  public var elements: [Element]
+
+  public init(_ elements: [Element]) {
+    self.rows = elements.count
+    self.elements = elements
+  }
+
+  @available(unavailable, message: "need to know exact size of vector")
+  @inlinable public static var zero: Self {
+    fatalError("unavailable")
+  }
 }
-
-
-
-
 
 public protocol Vector2Protocol: VectorProtocol {
-    var x: Element { get set }
-    var y: Element { get set }
+  var x: Element { get set }
+  var y: Element { get set }
 }
 
-public extension Vector2Protocol {
-    typealias Dimension = Dim_2x1
+extension Vector2Protocol {
+  public typealias Dimension = Dim_2x1
 
-    @inlinable var x: Element {
-        get {
-            return elements[0]
-        }
-        
-        set {
-            elements[0] = newValue
-        }
-    }
-    
-    @inlinable var y: Element {
-        get {
-            return elements[1]
-        }
-        
-        set {
-            elements[1] = newValue
-        }
-    }
- 
-    init(_ elements: [Element]) {
+  @inlinable public static var zero: Self {
+    Self([0, 0])
+  }
 
-        self.init()
-        
-        self.elements = elements
-
-        if self.elements.count < count {
-
-            self.elements.append(contentsOf: Array(repeating: Element.zero, count: count - self.elements.count))
-        }
+  @inlinable public var x: Element {
+    get {
+      return elements[0]
     }
 
-    init(_ x: Element, _ y: Element) {
-        
-        self.init([x, y])
+    set {
+      elements[0] = newValue
+    }
+  }
+
+  @inlinable public var y: Element {
+    get {
+      return elements[1]
     }
 
-    @inlinable func cross(_ other: Self) -> Element {
-        
-        return self.x * other.y - self.y * other.x
+    set {
+      elements[1] = newValue
     }
+  }
+
+  @inlinable public func cross(_ other: Self) -> Element {
+    return self.x * other.y - self.y * other.x
+  }
 }
 
-public extension Vector2Protocol where Element: BinaryFloatingPoint, Element.RawSignificand: FixedWidthInteger {
-    
-    @inlinable static var infinity: Self {
-        
-        Self(Element.infinity, Element.infinity)
-    }
-    
-    @inlinable static func random(in bounds: Rect<Element>) -> Self {
-       
-        self.init(Element.random(in: bounds.min.x...bounds.max.x), Element.random(in: bounds.min.y...bounds.max.y))
-    }
+extension Vector2Protocol
+where Element: BinaryFloatingPoint, Element.RawSignificand: FixedWidthInteger {
+  @inlinable public static var infinity: Self {
+    Self([Element.infinity, Element.infinity])
+  }
+
+  @inlinable public static func random(in bounds: Rect<Element>) -> Self {
+    self.init([
+      Element.random(in: bounds.min.x...bounds.max.x),
+      Element.random(in: bounds.min.y...bounds.max.y)
+    ])
+  }
 }
 
 public struct Vector2<E: Numeric & Hashable>: Vector2Protocol {
-  
-    public typealias Element = E
-  
-    public var rows: Int
-   
-    public var cols: Int
-   
-    public var elements: [Element]
+  public typealias Element = E
+  public let rows: Int = 2
+  public let cols: Int = 1
+  public var elements: [Element]
 
-    public init() {
-        
-        self.rows = 2
-        
-        self.cols = 1
-        
-        self.elements = [Element](repeating: 0, count: 2)
-    }
+  public init(_ elements: [Element]) {
+    self.elements = elements
+  }
+
+  public init(_ x: Element, _ y: Element) {
+    self.init([x, y])
+  }
+
+  public init(x: Element, y: Element) {
+    self.init([x, y])
+  }
 }
-
-public typealias DVec2 = Vector2<Double>
-
-public typealias FVec2 = Vector2<Float>
-
-public typealias IVec2 = Vector2<Int>
-
-
-
 
 public protocol Vector3Protocol: VectorProtocol {
 
 }
 
-public extension Vector3Protocol {
-    typealias Dimension = Dim_3x1
+extension Vector3Protocol {
+  public typealias Dimension = Dim_3x1
 
-    init(_ x: Element, _ y: Element, _ z: Element) {
-        
-        self.init()
-        
-        self.elements = [x, y, z]
+  @inlinable public static var zero: Self {
+    Self([0, 0, 0])
+  }
+
+  @inlinable public func cross(_ rhs: Self) -> Self {
+    let x = self[1] * rhs[2] - self[2] * rhs[1]
+    let y = self[2] * rhs[0] - self[0] * rhs[2]
+    let z = self[0] * rhs[1] - self[1] * rhs[0]
+
+    return Self([
+      x,
+      y,
+      z,
+    ])
+  }
+
+  @inlinable public var x: Element {
+    get {
+      return elements[0]
     }
 
-    @inlinable func cross(_ rhs: Self) -> Self {
-        
-        let x = self[1] * rhs[2] - self[2] * rhs[1]
-        
-        let y = self[2] * rhs[0] - self[0] * rhs[2]
-        
-        let z = self[0] * rhs[1] - self[1] * rhs[0]
-        
-        return Self([
-            x,
-            y,
-            z
-        ])
+    set {
+      elements[0] = newValue
+    }
+  }
+
+  @inlinable public var y: Element {
+    get {
+      return elements[1]
     }
 
-    @inlinable var x: Element {
-        get {
-            return elements[0]
-        }
-       
-        set {
-            elements[0] = newValue
-        }
+    set {
+      elements[1] = newValue
+    }
+  }
+
+  @inlinable public var z: Element {
+    get {
+      return elements[2]
     }
 
-    @inlinable var y: Element {
-        get {
-            return elements[1]
-        }
-        
-        set {
-            elements[1] = newValue
-        }
+    set {
+      elements[2] = newValue
     }
-
-    @inlinable var z: Element {
-        get {
-            return elements[2]
-        }
-        
-        set {
-            elements[2] = newValue
-        }
-    }
+  }
 }
 
-public extension Vector3Protocol where Element: FloatingPointGenericMath {
-
-    /// - Returns 0 to pi (positive only)
-    @inlinable func absAngle(to otherVector: Self) -> Element {
-
-        let angle = acos(normalized().dot(otherVector.normalized()))
-
-        return angle
-    }
+extension Vector3Protocol where Element: FloatingPointGenericMath {
+  /// - Returns 0 to pi (positive only)
+  @inlinable public func absAngle(to otherVector: Self) -> Element {
+    let angle = acos(normalized().dot(otherVector.normalized()))
+    return angle
+  }
 }
 
 public struct Vector3<E: Numeric & Hashable>: Vector3Protocol {
+  public typealias Element = E
+  public let rows: Int = 3
+  public let cols: Int = 1
+  public var elements: [Element]
 
-    public typealias Element = E
-    
-    public var rows: Int = 3
-    
-    public var cols: Int = 1
-    
-    public var elements: [Element]
+  public init(_ elements: [Element]) {
+    self.elements = elements
+  }
 
-    public init() {
+  public init(_ x: Element, _ y: Element, _ z: Element) {
+    self.elements = [x, y, z]
+  }
 
-        self.elements = [Element](repeating: 0, count: 3)
-    }
-
-    public init(x: Element, y: Element, z: Element) {
-
-        self.elements = [x, y, z]
-    }
+  public init(x: Element, y: Element, z: Element) {
+    self.elements = [x, y, z]
+  }
 }
-
-public typealias DVec3 = Vector3<Double>
-
-public typealias IVec3 = Vector3<Int>
-
-
-
-
 
 public protocol Vector4Protocol: VectorProtocol {
-    
+
 }
 
-public extension Vector4Protocol {
-    typealias Dimension = Dim_4x1
+extension Vector4Protocol {
+  public typealias Dimension = Dim_4x1
 
-    @inlinable var x: Element {
-        get {
-            return elements[0]
-        }
-       
-        set {
-            elements[0] = newValue
-        }
+  @inlinable public static var zero: Self {
+    Self([0, 0, 0, 0])
+  }
+
+  @inlinable public var x: Element {
+    get {
+      return elements[0]
     }
 
-    @inlinable var y: Element {
-        get {
-            return elements[1]
-        }
-        
-        set {
-            elements[1] = newValue
-        }
+    set {
+      elements[0] = newValue
+    }
+  }
+
+  @inlinable public var y: Element {
+    get {
+      return elements[1]
     }
 
-    @inlinable var z: Element {
-        get {
-            return elements[2]
-        }
-        
-        set {
-            elements[2] = newValue
-        }
+    set {
+      elements[1] = newValue
+    }
+  }
+
+  @inlinable public var z: Element {
+    get {
+      return elements[2]
     }
 
-    @inlinable var w: Element {
-        get {
-            return elements[3]
-        }
-        
-        set {
-            elements[3] = newValue
-        }
+    set {
+      elements[2] = newValue
     }
+  }
+
+  @inlinable public var w: Element {
+    get {
+      return elements[3]
+    }
+
+    set {
+      elements[3] = newValue
+    }
+  }
 }
 
 public struct Vector4<E: Numeric & Hashable>: Vector4Protocol {
-    
-    public typealias Element = E
-    
-    public var rows: Int
-    
-    public var cols: Int
-    
-    public var elements: [Element]
-    
-  /*  public var x: Element {
-        get {
-            return elements[0]
-        }
-        set {
-            elements[0] = newValue
-        }
-    }
-    public var y: Element {
-        get {
-            return elements[1]
-        }
-        set {
-            elements[1] = newValue
-        }
-    }
-    public var z: Element {
-        get {
-            return elements[2]
-        }
-        set {
-            elements[2] = newValue
-        }
-    }
-    public var w: Element {
-       
-    }*/
+  public typealias Element = E
+  public let rows: Int = 4
+  public let cols: Int = 1
+  public var elements: [Element]
 
-    public init() {
-        
-        self.rows = 4
-        
-        self.cols = 1
-        
-        self.elements = [Element](repeating: 0, count: 4)
-    }
+  public init(_ elements: [Element]) {
+    self.elements = elements
+  }
 
-    public init(_ elements: [Element]) {
-        
-        self.rows = 4
-        
-        self.cols = 1
-        
-        self.elements = elements
-    }
+  public init(_ vec3: Vector3<E>, _ element: Element) {
+    self.elements = vec3.elements + [element]
+  }
 
-    public init(_ vec3: Vector3<E>, _ element: Element) {
-        
-        self.rows = 4
-        
-        self.cols = 1
-        
-        self.elements = vec3.elements + [element]
-    }
-
-    public init(_ x: Element, _ y: Element, _ z: Element, _ w: Element) {
-        
-        self.init([x, y, z, w])
-    }
+  public init(_ x: Element, _ y: Element, _ z: Element, _ w: Element) {
+    self.init([x, y, z, w])
+  }
 }
 
 extension Matrix4Protocol {
-
-    @inlinable public static func matmul <VectorProtocol: Vector4Protocol> (_ other: VectorProtocol) -> VectorProtocol where Self.Element == VectorProtocol.Element {
-
-        return VectorProtocol(try! self.matmul(other).elements)
-    }
+  @inlinable public static func matmul<VectorProtocol: Vector4Protocol>(_ other: VectorProtocol)
+    -> VectorProtocol where Self.Element == VectorProtocol.Element
+  {
+    return VectorProtocol(try! self.matmul(other).elements)
+  }
 }
 
+public typealias DVec2 = Vector2<Double>
+public typealias FVec2 = Vector2<Float>
+public typealias IVec2 = Vector2<Int>
+public typealias DVec3 = Vector3<Double>
+public typealias IVec3 = Vector3<Int>
+public typealias FVec3 = Vector3<Float>
 public typealias DVec4 = Vector4<Double>
-
 public typealias FVec4 = Vector4<Float>

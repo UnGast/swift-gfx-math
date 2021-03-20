@@ -26,7 +26,7 @@ public struct AnyPlane<E: Numeric & Hashable>: Plane {
     public var normal: Vector3<E>
 
     public init() {
-        self.point = Vector3<E>()
-        self.normal = Vector3<E>()
+        self.point = Vector3<E>([])
+        self.normal = Vector3<E>([])
     }
 }

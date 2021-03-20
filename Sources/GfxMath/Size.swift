@@ -41,30 +41,20 @@ public extension Size2Protocol {
     }
 }
 
-public struct Size2<E: Numeric & Hashable>: Size2Protocol {
+public typealias Size2<E: Numeric & Hashable> = Vector2<E>
 
-    public typealias Element = E
-
-    public var rows: Int
-
-    public var cols: Int
-
-    public var elements: [Element]
-
-    public init() {
-
-        self.rows = 2
-
-        self.cols = 1
-        
-        self.elements = [Element](repeating: 0, count: 2)
+extension Size2 {
+    public var width: E {
+        get { x }
+        set { x = newValue }
+    }
+    public var height: E {
+        get { y }
+        set { y = newValue }
     }
 }
 
 public typealias DSize2 = Size2<Double>
-
 public typealias ISize2 = Size2<Int>
-
 public typealias DSize3 = Size3<Double>
-
 public typealias ISize3 = Size3<Int>

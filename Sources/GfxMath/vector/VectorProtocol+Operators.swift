@@ -7,17 +7,17 @@ extension VectorProtocol {
     return result
   }
 
-  @inlinable public static func += (lhs: inout Self, rhs: Self) {
+  /*@inlinable public static func += (lhs: inout Self, rhs: Self) {
     for i in 0..<lhs.rows {
       lhs[i] += rhs[i]
     }
-  }
+  }*/
 
-  @inlinable public static func + (lhs: Self, rhs: Self) -> Self {
+  /*@inlinable public static func + (lhs: Self, rhs: Self) -> Self {
     var result = lhs
     result += rhs
     return result 
-  }
+  }*/
 
   @inlinable public static func += <O: VectorProtocol>(lhs: inout Self, rhs: O) where O.Dimension == Dimension, O.Element == Element {
     for i in 0..<lhs.rows {
@@ -25,13 +25,13 @@ extension VectorProtocol {
     }
   }
 
-  @inlinable public static func + <O: VectorProtocol>(lhs: inout Self, rhs: O) -> Self where O.Dimension == Dimension, O.Element == Element {
+  @inlinable public static func + <O: VectorProtocol>(lhs: Self, rhs: O) -> Self where O.Dimension == Dimension, O.Element == Element {
     var result = lhs
     result += rhs
     return result
   }
 
-  @inlinable public static func -= (lhs: inout Self, rhs: Self) {
+  /*@inlinable public static func -= (lhs: inout Self, rhs: Self) {
     for i in 0..<Swift.min(lhs.rows, rhs.rows) {
       lhs[i] -= rhs[i]
     }
@@ -41,7 +41,7 @@ extension VectorProtocol {
     var result = lhs
     result -= rhs
     return result
-  }
+  }*/
 
   @inlinable public static func -= <O: VectorProtocol>(lhs: inout Self, rhs: O) where O.Dimension == Dimension, O.Element == Element {
     for i in 0..<lhs.rows {
@@ -49,7 +49,7 @@ extension VectorProtocol {
     }
   }
 
-  @inlinable public static func - <O: VectorProtocol>(lhs: inout Self, rhs: O) -> Self where O.Dimension == Dimension, O.Element == Element {
+  @inlinable public static func - <O: VectorProtocol>(lhs: Self, rhs: O) -> Self where O.Dimension == Dimension, O.Element == Element {
     var result = lhs
     result -= rhs
     return result
@@ -59,16 +59,6 @@ extension VectorProtocol {
     for i in 0..<lhs.count {
       lhs[i] *= rhs
     }
-  }
-
-  @inlinable public static func * (lhs: Self, rhs: Element) -> Self {
-    var result = lhs
-    result *= rhs
-    return result
-  }
-
-  @inlinable public static func * (lhs: Element, rhs: Self) -> Self {
-    rhs * lhs
   }
 
   @inlinable public static func *= (lhs: inout Self, rhs: Self) {
