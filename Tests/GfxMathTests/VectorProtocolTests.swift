@@ -119,12 +119,23 @@ class VectorProtocolTests: XCTestCase {
     XCTAssertEqual(vector1 / vector4, .infinity)
   }
 
+  func testVector3Rotation() {
+    let angle = 180.0
+    let axis = Vector3(1.0, 0, 0)
+    let vector = Vector3(0.0, 0.0, -1.0)
+    let result = vector.rotated(by: angle, around: axis)
+    XCTAssertEqual(result.x, 0)
+    XCTAssertEqual(result.y, 0.0, accuracy: 0.001)
+    XCTAssertEqual(result.z, 1.0, accuracy: 0.001)
+  }
+
   static var allTests = [
     ("testVectorScalarComparison", testVectorScalarComparison),
     ("testVectorVectorComparison", testVectorVectorComparison),
     ("testVectorAddition", testVectorAddition),
     ("testVectorSubtraction", testVectorSubtraction),
     ("testVectorMultiplication", testVectorMultiplication),
-    ("testVectorDivision", testVectorDivision)
+    ("testVectorDivision", testVectorDivision),
+    ("testVector3Rotation", testVector3Rotation)
   ]
 }

@@ -143,14 +143,6 @@ extension Vector3Protocol {
   }
 }
 
-extension Vector3Protocol where Element: FloatingPointGenericMath {
-  /// - Returns 0 to pi (positive only)
-  @inlinable public func absAngle(to otherVector: Self) -> Element {
-    let angle = acos(normalized().dot(otherVector.normalized()))
-    return angle
-  }
-}
-
 public struct Vector3<E: Numeric & Hashable>: Vector3Protocol {
   public typealias Element = E
   public let rows: Int = 3

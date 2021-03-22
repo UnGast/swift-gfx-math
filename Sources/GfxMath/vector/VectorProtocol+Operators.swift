@@ -154,6 +154,25 @@ extension VectorProtocol where Element: FloatingPoint {
   }
 }
 
+extension Vector3Protocol where Element: FloatingPointGenericMath {
+  /// - Returns 0 to pi (positive only)
+  @inlinable public func absAngle(to otherVector: Self) -> Element {
+    let angle = acos(normalized().dot(otherVector.normalized()))
+    return angle
+  }
+
+  /**
+  internally constructs a quaternion to perform the rotation
+  - Parameter angle: angle by which to rotate in degrees
+  - Parameter axis: axis around which to rotate, will be normalized automatically
+  */
+  @inlinable public func rotated<V: Vector3Protocol>(by angle: Element, around axis: V) -> Self where V.Element == Element {
+    let rotationQuat = Quaternion(angle: angle / 2, axis: axis)
+    let rotatedQuat = rotationQuat * Quaternion(w: 0, axis: self) * rotationQuat.inverse
+    return Self(rotatedQuat.axis.elements)
+  }
+}
+
 /// - Returns: The component-wise min of two given vectors.
 @inlinable public func min<V: VectorProtocol>(_ vec1: V, _ vec2: V) -> V
 where V.Element: Comparable {
