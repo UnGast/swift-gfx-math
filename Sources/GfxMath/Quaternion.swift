@@ -44,6 +44,10 @@ public struct Quaternion<E: FloatingPointGenericMath>: Equatable {
     set { axis.z = newValue }
   }
 
+  public static var identity: Self {
+    Self(w: 1, axis: Vector3<Element>.zero)
+  }
+
   public var magnitude: Element {
     (pow(w, 2) + pow(axis.x, 2) + pow(axis.y, 2) + pow(axis.z, 2)).squareRoot()
   }

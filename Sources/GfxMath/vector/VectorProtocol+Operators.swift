@@ -168,7 +168,11 @@ extension Vector3Protocol where Element: FloatingPointGenericMath {
   */
   @inlinable public func rotated<V: Vector3Protocol>(by angle: Element, around axis: V) -> Self where V.Element == Element {
     let rotationQuat = Quaternion(angle: angle / 2, axis: axis)
-    let rotatedQuat = rotationQuat * Quaternion(w: 0, axis: self) * rotationQuat.inverse
+    return rotated(by: rotationQuat)
+  }
+  
+  @inlinable public func rotated(by quaternion: Quaternion<Element>) -> Self {
+    let rotatedQuat = quaternion * Quaternion(w: 0, axis: self) * quaternion.inverse
     return Self(rotatedQuat.axis.elements)
   }
 }
