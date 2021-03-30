@@ -263,6 +263,15 @@ public protocol Matrix4Protocol: MatrixProtocol {
 
 public extension Matrix4Protocol {
 
+    public init<M3: Matrix3Protocol>(topLeft: M3, rest: Self = .identity) where M3.Element == Element {
+        self.init([
+            topLeft[0, 0], topLeft[0, 1], topLeft[0, 2], rest[0, 3],
+            topLeft[1, 0], topLeft[1, 1], topLeft[1, 2], rest[1, 3],
+            topLeft[2, 0], topLeft[2, 1], topLeft[2, 2], rest[2, 3],
+            rest[3, 0], rest[3, 1], rest[3, 2], rest[3, 3],
+        ])
+    }
+
     @inlinable static var identity: Self {
         Self([
             1, 0, 0, 0,
