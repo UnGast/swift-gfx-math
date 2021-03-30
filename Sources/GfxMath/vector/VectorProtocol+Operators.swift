@@ -167,7 +167,7 @@ extension Vector3Protocol where Element: FloatingPointGenericMath {
   - Parameter axis: axis around which to rotate, will be normalized automatically
   */
   @inlinable public func rotated<V: Vector3Protocol>(by angle: Element, around axis: V) -> Self where V.Element == Element {
-    let rotationQuat = Quaternion(angle: angle / 2, axis: axis)
+    let rotationQuat = Quaternion(angle: angle, axis: axis)
     return rotated(by: rotationQuat)
   }
   
