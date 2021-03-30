@@ -20,15 +20,11 @@ public struct MatrixSizeError: Error {
 
 public extension MatrixProtocol {
     @inlinable var description: String {
-        get {
-            return "MatrixProtocol r:\(rows) x c:\(cols) \(elements)"
-        }
+        "MatrixProtocol r:\(rows) x c:\(cols) \(elements)"
     }
 
     @inlinable var count: Int {
-        get {
-            return rows * cols
-        }
+        rows * cols
     }
 
     @inlinable subscript(row: Int, col: Int) -> Element {
@@ -231,6 +227,33 @@ public struct Matrix<E: Numeric & Hashable>: MatrixProtocol {
 
     @inlinable public func clone() -> Self {
         Self(rows: rows, cols: cols, elements: elements)
+    }
+}
+
+public protocol Matrix3Protocol: MatrixProtocol {
+    init(_ elements: [Element])
+}
+
+extension Matrix3Protocol {
+    public typealias Dimension = Dim_3x3
+
+    public static var zero: Self {
+        Self(Array(repeating: 0, count: 9))
+    }
+
+    public func clone() -> Self {
+        Self(elements)
+    }
+}
+
+public struct Matrix3<E: Numeric & Hashable>: Matrix3Protocol {
+    public typealias Element = E
+    public let rows: Int = 3
+    public let cols: Int = 3
+    public var elements: [E]
+
+    public init(_ elements: [Element]) {
+        self.elements = elements
     }
 }
 
