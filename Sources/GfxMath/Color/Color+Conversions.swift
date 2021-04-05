@@ -1,6 +1,6 @@
 extension Color {
     
-    internal static func rgbToHsl(rgb: RGB) -> HSL {
+    internal static func rgbToHsl(rgb: RGB<UInt8>) -> HSL {
 
         let r = Double(rgb.r) / 255
         let g = Double(rgb.g) / 255
@@ -47,7 +47,7 @@ extension Color {
         return HSL(h: h, s: s, l: l)
     }
 
-    internal static func hslToRgb(hsl: HSL) -> RGB {
+    internal static func hslToRgb(hsl: HSL) -> RGB<UInt8> {
         
         let r: Double
         let g: Double

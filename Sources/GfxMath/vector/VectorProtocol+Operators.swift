@@ -1,3 +1,5 @@
+import Foundation
+
 extension VectorProtocol {
   @inlinable public func dot(_ otherVector: Self) -> Element {
     var result = Element.zero
@@ -125,6 +127,14 @@ extension VectorProtocol where Element: Comparable {
       }
     }
     return true
+  }
+
+  @inlinable public func componentMagnitudesBelow(threshold: Element) -> Bool {
+    elements.allSatisfy { $0 < threshold }
+  }
+
+  @inlinable public func componentMagnitudesBelow(threshold: Element) -> Bool where Element: SignedNumeric {
+    elements.allSatisfy { Swift.abs($0) < threshold }
   }
 }
 

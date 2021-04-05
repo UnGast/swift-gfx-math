@@ -1,12 +1,24 @@
 import Foundation
 
 public struct Color: Hashable, Equatable {
-    public typealias RGB = (r: UInt8, g: UInt8, b: UInt8)
-    public typealias RGBA = (r: UInt8, g: UInt8, b: UInt8, a: UInt8)
+    public typealias RGB<T> = (r: T, g: T, b: T)
+    public typealias RGBA<T> = (r: T, g: T, b: T, a: T)
     public typealias HSL = (h: Double, s: Double, l: Double)
     public typealias HSLA = (h: Double, s: Double, l: Double, a: Double)
 
-    public private(set) var rgb: RGB 
+    public private(set) var rgb: RGB<UInt8>
+    /**
+    - Returns: color represented by rgb floating point values between 0 and 1
+    */
+    public func fpRgbZeroOne<T>() -> RGB<T> where T: FloatingPoint {
+        (T(rgb.r) / 255, T(rgb.g) / 255, T(rgb.b) / 255)
+    }
+    /**
+    - Returns: color represented by rgba floating point values between 0 and 1
+    */
+    public func fpRgbaZeroOne<T>() -> RGBA<T> where T: FloatingPoint {
+        (T(rgb.r) / 255, T(rgb.g) / 255, T(rgb.b) / 255, T(a) / 255)
+    }
     public private(set) var hsl: HSL
     public private(set) var a: UInt8
     public var aFrac: Double {
@@ -79,10 +91,10 @@ public struct Color: Hashable, Equatable {
         Self(h: h, s: s, l: l - l * (percentage / 100), a: Double(a) / 255)
     }
 
-    /// - Parameter percentage: How much of the resulting color should be the other color?
-    public func mixed(_ other: Color, _ percentage: Double) -> Self {
-        let ownFactor = (100 - percentage) / 100
-        let otherFactor = percentage / 100
+    /// - Parameter otherRelativeAmount: 0-100
+    public func mixed(_ other: Color, _ otherRelativeAmout: Double) -> Self {
+        let ownFactor = (100 - otherRelativeAmout) / 100
+        let otherFactor = otherRelativeAmout / 100
         return Self(
             r: UInt8(Double(r) * ownFactor + Double(other.r) * otherFactor),
             g: UInt8(Double(g) * ownFactor + Double(other.g) * otherFactor),
