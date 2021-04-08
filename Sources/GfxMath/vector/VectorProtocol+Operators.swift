@@ -162,6 +162,57 @@ extension VectorProtocol where Element: FloatingPoint {
     result /= rhs
     return result
   }
+
+  @inlinable public var lengthSquared: Element {
+    var sum: Element = 0
+    for element in self {
+      sum += element * element
+    }
+    return sum
+  }
+
+  @inlinable public var length: Element {
+    sqrt(lengthSquared)
+  }
+
+  /// same as length
+  @inlinable public var magnitude: Element {
+    length
+  }
+
+  @inlinable public func normalized() -> Self {
+    var normalized = self
+
+    if length == 0 {
+      return normalized
+    }
+
+    for i in 0..<rows {
+      normalized[i] = self[i] / length
+    }
+
+    return normalized
+  }
+
+  @inlinable public func rounded() -> Self {
+    var result = self
+
+    for i in 0..<count {
+      result[i] = self[i].rounded()
+    }
+
+    return result
+  }
+
+  @inlinable public func rounded(_ rule: FloatingPointRoundingRule) -> Self {
+    var result = self
+
+    for i in 0..<count {
+      result[i] = self[i].rounded(rule)
+    }
+
+    return result
+  }
 }
 
 extension Vector3Protocol where Element: FloatingPointGenericMath {
