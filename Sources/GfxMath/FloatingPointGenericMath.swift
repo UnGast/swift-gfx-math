@@ -9,6 +9,8 @@ public protocol FloatingPointGenericMath : FloatingPoint {
   static func _pow(_ x: Self, _ y: Self) -> Self
   // ...
 }
+
+#if os(Linux) || os(macOS)
 extension Float80 : FloatingPointGenericMath {
   public static func _log(_ x: Float80) -> Float80 { return log(x) }
   public static func _sin(_ x: Float80) -> Float80 { return sin(x) }
@@ -18,6 +20,8 @@ extension Float80 : FloatingPointGenericMath {
   public static func _pow(_ x: Float80, _ y: Float80) -> Float80 { return pow(x, y) }
   // ...
 }
+#endif
+
 extension Double : FloatingPointGenericMath {
   public static func _log(_ x: Double) -> Double { return log(x) }
   public static func _sin(_ x: Double) -> Double { return sin(x) }
