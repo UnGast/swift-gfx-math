@@ -9,18 +9,6 @@ extension VectorProtocol {
     return result
   }
 
-  /*@inlinable public static func += (lhs: inout Self, rhs: Self) {
-    for i in 0..<lhs.rows {
-      lhs[i] += rhs[i]
-    }
-  }*/
-
-  /*@inlinable public static func + (lhs: Self, rhs: Self) -> Self {
-    var result = lhs
-    result += rhs
-    return result 
-  }*/
-
   @inlinable public static func += <O: VectorProtocol>(lhs: inout Self, rhs: O) where O.Dimension == Dimension, O.Element == Element {
     for i in 0..<lhs.rows {
       lhs[i] += rhs[i]
@@ -32,18 +20,6 @@ extension VectorProtocol {
     result += rhs
     return result
   }
-
-  /*@inlinable public static func -= (lhs: inout Self, rhs: Self) {
-    for i in 0..<Swift.min(lhs.rows, rhs.rows) {
-      lhs[i] -= rhs[i]
-    }
-  }
-
-  @inlinable public static func - (lhs: Self, rhs: Self) -> Self {
-    var result = lhs
-    result -= rhs
-    return result
-  }*/
 
   @inlinable public static func -= <O: VectorProtocol>(lhs: inout Self, rhs: O) where O.Dimension == Dimension, O.Element == Element {
     for i in 0..<lhs.rows {
@@ -73,6 +49,17 @@ extension VectorProtocol {
     var result = lhs
     result *= rhs
     return result
+  }
+}
+
+extension VectorProtocol where Dimension: StaticMatrixDimension, Element: Comparable, Element: BinaryFloatingPoint, Element.RawSignificand: FixedWidthInteger {
+  @inlinable public static func random(in range: Range<Element>) -> Self {
+    let elements = Array(0..<Dimension.itemCount).map { _ in Element.random(in: range) }
+    return Self(elements)
+  }
+
+  @inlinable public static func random(in range: ClosedRange<Element>) -> Self where Element.Stride: SignedInteger {
+    return Self.random(in: Range(range))
   }
 }
 
@@ -235,6 +222,23 @@ extension Vector3Protocol where Element: FloatingPointGenericMath {
   @inlinable public func rotated(by quaternion: Quaternion<Element>) -> Self {
     let rotatedQuat = quaternion * Quaternion(w: 0, axis: self) * quaternion.inverse
     return Self(rotatedQuat.axis.elements)
+  }
+
+  /**
+  - Returns: any vector perpendicular to this one; .zero if this vector is .zero
+
+  UNTESTED!
+  */
+  @inlinable public func getAnyPerpendicular() -> Self {
+    if x != 0 {
+      return Self([(-y - z) / x, 1, 1])
+    } else if y != 0 {
+      return Self([1, (-x - z) / y, 1])
+    } else if z != 0 {
+      return Self([1, 1, (-x - y) / z])
+    } else {
+      return .zero
+    }
   }
 }
 
