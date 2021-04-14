@@ -18,25 +18,19 @@ public struct FpRGBColor<D: BinaryFloatingPoint>: EColor {
 
 extension FpRGBColor {
     public func toOldColorFormat() -> Color {
-        Color(UInt8(min(255, r * 255)), UInt8(min(255, g * 255)), UInt8(min(255, b * 255)), 255)
+        Color(UInt8(max(0, min(255, r * 255))), UInt8(max(0, min(255, g * 255))), UInt8(max(0, min(255, b * 255))), 255)
     }
 
     @inlinable mutating public func add(other: Self) {
         self.r += other.r
-        self.r = max(0, min(1, r))
         self.g += other.g
-        self.g = max(0, min(1, g))
         self.b += other.b
-        self.b = max(0, min(1, b))
     }
 
     @inlinable mutating public func multiply(other: Self) {
         self.r *= other.r
-        self.r = max(0, min(1, r))
         self.g *= other.g
-        self.g = max(0, min(1, g))
         self.b *= other.b
-        self.b = max(0, min(1, b))
     }
 
     @inlinable public static var white: Self {
