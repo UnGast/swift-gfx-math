@@ -1,7 +1,9 @@
 public protocol Line: CustomDebugStringConvertible {
     associatedtype VectorProtocol: GfxMath.VectorProtocol where VectorProtocol.Element: BinaryFloatingPoint
 
+    @available(deprecated, message: "use origin")
     var point: VectorProtocol { get set }
+    var origin: VectorProtocol { get set }
     var direction: VectorProtocol { get set }
     
     init()
@@ -23,6 +25,11 @@ public extension Line {
 
     var debugDescription: String {
         "Line x = (\(point)) + scale * (\(direction))"
+    }
+
+    var point: VectorProtocol {
+        get { origin }
+        set { origin = newValue }
     }
 
     /// assuming: resultVec = pointOnLineVec + scale * directionVec 
@@ -104,11 +111,11 @@ public extension Line where VectorProtocol: Vector3Protocol {
 
 public struct AnyLine<V: VectorProtocol>: Line where V.Element: BinaryFloatingPoint {
     public typealias VectorProtocol = V
-    public var point: V
+    public var origin: V
     public var direction: V
     
     public init() {
-        self.point = V.zero
+        self.origin = V.zero
         self.direction = V.zero
     }
 }

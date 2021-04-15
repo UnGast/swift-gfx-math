@@ -51,6 +51,10 @@ extension Vector2Protocol {
     }
   }
 
+  @inlinable public var tuple: (x: Element, y: Element) {
+    (x, y)
+  }
+
   @inlinable public func cross(_ other: Self) -> Element {
     return self.x * other.y - self.y * other.x
   }

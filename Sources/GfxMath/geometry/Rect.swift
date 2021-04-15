@@ -125,6 +125,30 @@ extension Rect where E: FloatingPoint {
     public init(center: Vector2<E>, size: Size2<E>) {
         self.init(min: Vector2<E>(center.x - size.width / 2, center.y - size.height / 2), size: size)
     }
+    
+    /// UNTESTED!
+    public func intersections<L: Line>(with line: L) -> (min: Vector2<E>, max: Vector2<E>)? where L.VectorProtocol: Vector2Protocol, L.VectorProtocol.Element == E {
+        // this can be generalized for any axis aligned bounding box (also 3d, 4d probably, etc.)
+        var minScale = -E.infinity
+        var maxScale = E.infinity
+        for dimension in 0..<2 {
+            var newMinScale = (min[dimension] - line.point[dimension]) / line.direction[dimension]
+            var newMaxScale = (max[dimension] - line.point[dimension]) / line.direction[dimension]
+            if newMinScale > newMaxScale {
+                let tmp = newMinScale
+                newMinScale = newMaxScale
+                newMaxScale = tmp
+            }
+            minScale = Swift.max(minScale, newMinScale)
+            maxScale = Swift.min(maxScale, newMaxScale)
+            
+            if maxScale < minScale {
+                return nil
+            }
+        }
+
+        return (min: Vector2<E>(line.pointAtScale(minScale)), max: Vector2<E>(line.pointAtScale(maxScale)))
+    }
 }
 
 /// An axis aligned Rect in 2 coordinate space.
