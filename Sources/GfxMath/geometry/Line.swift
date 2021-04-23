@@ -1,7 +1,7 @@
 public protocol Line: CustomDebugStringConvertible {
     associatedtype VectorProtocol: GfxMath.VectorProtocol where VectorProtocol.Element: BinaryFloatingPoint
 
-    @available(deprecated, message: "use origin")
+    @available(*, deprecated, message: "use origin")
     var point: VectorProtocol { get set }
     var origin: VectorProtocol { get set }
     var direction: VectorProtocol { get set }

@@ -13,9 +13,9 @@ public struct Vector<E: Numeric & Hashable>: VectorProtocol {
     self.elements = elements
   }
 
-  @available(unavailable, message: "need to know exact size of vector")
+  /// a vector without elements, since the size is not known
   @inlinable public static var zero: Self {
-    fatalError("unavailable")
+    Self([])
   }
 }
 
