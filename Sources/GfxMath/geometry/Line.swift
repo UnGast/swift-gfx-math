@@ -33,7 +33,12 @@ public extension Line {
     }
 
     /// assuming: resultVec = pointOnLineVec + scale * directionVec 
+    @available(*, deprecated, message: "use pointAt(scale:)")
     func pointAtScale(_ scale: VectorProtocol.Element) -> VectorProtocol {
+        pointAt(scale: scale)
+    }
+
+    func pointAt(scale: VectorProtocol.Element) -> VectorProtocol {
         return point + direction * scale
     }
 
