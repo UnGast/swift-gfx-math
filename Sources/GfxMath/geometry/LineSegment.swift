@@ -3,14 +3,14 @@ public struct LineSegment<V: VectorProtocol> where V.Element: BinaryFloatingPoin
 
   public var scaleMin: Vector.Element
   public var scaleMax: Vector.Element
-  public var min: Vector {
+  public var start: Vector {
     line.pointAtScale(scaleMin)
   }
-  public var max: Vector {
+  public var end: Vector {
     line.pointAtScale(scaleMax)
   }
   public var length: Vector.Element {
-    (min - max).length
+    (start - end).length
   }
 
   public var line: AnyLine<Vector>
