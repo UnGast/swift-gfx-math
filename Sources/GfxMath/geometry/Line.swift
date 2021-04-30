@@ -8,10 +8,16 @@ public protocol Line: CustomDebugStringConvertible {
     
     init()
     init(point: VectorProtocol, direction: VectorProtocol)
+    init(origin: VectorProtocol, direction: VectorProtocol)
 }
 
 public extension Line {
+    @available(*, deprecated, message: "use init(origin:, direction:)")
     init(point: VectorProtocol, direction: VectorProtocol) {
+        self.init(origin: point, direction: direction)
+    }
+
+    init(origin: VectorProtocol, direction: VectorProtocol) {
         self.init()
         self.point = point
         self.direction = direction.normalized()
