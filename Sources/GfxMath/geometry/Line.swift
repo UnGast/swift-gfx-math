@@ -19,7 +19,7 @@ public extension Line {
 
     init(origin: VectorProtocol, direction: VectorProtocol) {
         self.init()
-        self.point = point
+        self.point = origin
         self.direction = direction.normalized()
     }
 
