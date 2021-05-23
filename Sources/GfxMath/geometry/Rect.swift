@@ -127,7 +127,7 @@ extension Rect where E: FloatingPoint {
     }
     
     /// UNTESTED!
-    public func intersections<L: Line>(with line: L) -> (min: Vector2<E>, max: Vector2<E>)? where L.VectorProtocol: Vector2Protocol, L.VectorProtocol.Element == E {
+    public func intersections<L: LineProtocol>(with line: L) -> (min: Vector2<E>, max: Vector2<E>)? where L.VectorProtocol: Vector2Protocol, L.VectorProtocol.Element == E {
         // this can be generalized for any axis aligned bounding box (also 3d, 4d probably, etc.)
         var minScale = -E.infinity
         var maxScale = E.infinity

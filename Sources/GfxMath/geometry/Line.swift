@@ -1,4 +1,4 @@
-public protocol Line: CustomDebugStringConvertible {
+public protocol LineProtocol: CustomDebugStringConvertible {
     associatedtype VectorProtocol: GfxMath.VectorProtocol where VectorProtocol.Element: BinaryFloatingPoint
 
     @available(*, deprecated, message: "use origin")
@@ -11,7 +11,7 @@ public protocol Line: CustomDebugStringConvertible {
     init(origin: VectorProtocol, direction: VectorProtocol)
 }
 
-public extension Line {
+public extension LineProtocol {
     @available(*, deprecated, message: "use init(origin:, direction:)")
     init(point: VectorProtocol, direction: VectorProtocol) {
         self.init(origin: point, direction: direction)
@@ -30,7 +30,7 @@ public extension Line {
     }
 
     var debugDescription: String {
-        "Line x = (\(point)) + scale * (\(direction))"
+        "LineProtocol x = (\(point)) + scale * (\(direction))"
     }
 
     var point: VectorProtocol {
@@ -85,10 +85,10 @@ public extension Line {
     }
 }
 
-public extension Line where VectorProtocol: Vector2Protocol {
+public extension LineProtocol where VectorProtocol: Vector2Protocol {
     // TODO: what to return on identical
     /// - Returns: nil if parallel, self.point when identical, intersection point if intersecting
-    func intersect<O: Line>(line otherLine: O) -> VectorProtocol? where O.VectorProtocol == VectorProtocol {
+    func intersect<O: LineProtocol>(line otherLine: O) -> VectorProtocol? where O.VectorProtocol == VectorProtocol {
         // self --> line1
         // otherLine --> line2
         let slope1 = self.direction.x / self.direction.y
@@ -109,7 +109,7 @@ public extension Line where VectorProtocol: Vector2Protocol {
     }
 }
 
-public extension Line where VectorProtocol: Vector3Protocol {
+public extension LineProtocol where VectorProtocol: Vector3Protocol {
     func intersect<P: Plane>(plane: P) -> VectorProtocol? where P.VectorProtocol == VectorProtocol {
         if plane.normal.dot(direction) == 0 {
             return nil
@@ -120,7 +120,7 @@ public extension Line where VectorProtocol: Vector3Protocol {
     }
 }
 
-public struct AnyLine<V: VectorProtocol>: Line where V.Element: BinaryFloatingPoint {
+public struct Line<V: VectorProtocol>: LineProtocol where V.Element: BinaryFloatingPoint {
     public typealias VectorProtocol = V
     public var origin: V
     public var direction: V
@@ -130,3 +130,6 @@ public struct AnyLine<V: VectorProtocol>: Line where V.Element: BinaryFloatingPo
         self.direction = V.zero
     }
 }
+
+@available(*, deprecated, message: "use Line<V> instead of AnyLine<V>")
+public typealias AnyLine<V: VectorProtocol> = Line<V> where V.Element: BinaryFloatingPoint
