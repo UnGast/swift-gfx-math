@@ -120,7 +120,7 @@ public extension LineProtocol where VectorProtocol: Vector3Protocol {
     }
 }
 
-public struct Line<V: VectorProtocol>: LineProtocol where V.Element: BinaryFloatingPoint {
+public struct Line<V: VectorProtocol>: LineProtocol, Equatable where V.Element: BinaryFloatingPoint {
     public typealias VectorProtocol = V
     public var origin: V
     public var direction: V
