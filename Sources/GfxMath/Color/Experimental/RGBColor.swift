@@ -40,6 +40,10 @@ extension FpRGBColor {
     @inlinable public static var black: Self {
         Self(0, 0, 0)
     }
+
+    @inlinable public static var blue: Self {
+        Self(0, 0, 1)
+    }
 }
 /*
 extension RGBColor where DataType: BinaryInteger {

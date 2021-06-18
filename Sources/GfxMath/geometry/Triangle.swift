@@ -33,3 +33,12 @@ public struct Triangle<V: VectorProtocol> {
     fatalError("not implemented")
   }
 }
+
+extension Triangle where V: Vector2Protocol, V.Element: BinaryFloatingPoint {
+  public var area: V.Element {
+    let v1 = vertexB - vertexA
+    let v2 = vertexC - vertexA
+    return abs(v1.cross(v2)) / 2
+  }
+
+}
