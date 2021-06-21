@@ -340,6 +340,41 @@ public extension Matrix4Protocol where Element: FloatingPointGenericMath {
         ])
     }
 
+    /// - Returns: a scaling matrix
+    @inlinable static func scale(_ scale: Vector3<Element>) -> Self {
+        Self([
+            scale.x, 0, 0, 0,
+            0, scale.y, 0, 0,
+            0, 0, scale.z, 0,
+            0, 0, 0, 1
+        ])
+    }
+
+    /// - Returns: a translation matrix with the given translation as the last column
+    @inlinable static func translation(_ translation: Vector3<Element>) -> Self {
+        Self([
+            1, 0, 0, translation.x,
+            0, 1, 0, translation.y,
+            0, 0, 1, translation.z,
+            0, 0, 0, 1
+        ])
+    }
+
+    /// - Returns: rotation matrix with given axes as columns, these are the axes of the rotated coordinate system
+    @inlinable static func rotation(x xAxis: Vector3<Element>, y yAxis: Vector3<Element>, z zAxis: Vector3<Element>) -> Self {
+        Self([
+            xAxis.x, yAxis.x, zAxis.x, 0,
+            xAxis.y, yAxis.y, zAxis.y, 0,
+            xAxis.z, yAxis.z, zAxis.z, 0,
+            0, 0, 0, 1
+        ])
+    }
+
+    /// - Returns: a full transformation matrix, orientation: translation is encoded in the last column before applying rotation
+    @inlinable static func transformation(scale: Vector3<Element>, rotationX: Vector3<Element>, rotationY: Vector3<Element>, rotationZ: Vector3<Element>, translation: Vector3<Element>) -> Self {
+        self.translation(translation).matmul(self.rotation(x: rotationX, y: rotationY, z: rotationZ).matmul(self.scale(scale)))
+    }
+
     // TODO: the following functions might be specific to openGL, maybe put those in the GLGraphicsMath package
     @inlinable static func viewTransformation<V: Vector3Protocol>(up: V, right: V, front: V, translation: V) -> Self where V.Element == Self.Element {
         return try! Self([
