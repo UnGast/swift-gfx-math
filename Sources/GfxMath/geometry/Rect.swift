@@ -151,7 +151,14 @@ extension Rect where E: FloatingPoint {
     }
 }
 
+extension Rect where E: BinaryFloatingPoint {
+    public init<O: BinaryFloatingPoint>(_ other: Rect<O>) {
+        self.init(min: Vector2<E>(other.min), max: Vector2<E>(other.max))
+    }
+}
+
 /// An axis aligned Rect in 2 coordinate space.
 /// - SeeAlso: Rect
 public typealias DRect = Rect<Double>
+public typealias FRect = Rect<Float>
 public typealias IRect = Rect<Int>

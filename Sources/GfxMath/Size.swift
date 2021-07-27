@@ -44,6 +44,8 @@ public struct Size2<E: Numeric & Hashable>: Size2Protocol {
 }
 
 public typealias DSize2 = Size2<Double>
+public typealias FSize2 = Size2<Float>
 public typealias ISize2 = Size2<Int>
 public typealias DSize3 = Size3<Double>
+public typealias FSize3 = Size3<Float>
 public typealias ISize3 = Size3<Int>
