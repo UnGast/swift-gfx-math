@@ -3,10 +3,6 @@ import XCTest
 @testable import GfxMath
 
 class RectTests: XCTestCase {
-  func testIntersects() {
-
-  }
-
   func testIntersection() {
     // arbitrary intersection
     var rect1 = DRect(min: DVec2(10, 20), max: DVec2(40, 50))
@@ -44,7 +40,9 @@ class RectTests: XCTestCase {
     XCTAssertEqual(intersection, rect1)
   }
 
-  static var allTests = [
-    ("testIntersection", testIntersection)
-  ]
+  func testInitContainingPoints() {
+    let points = [DVec2(-1, 1), DVec2(-10, 20), DVec2(0.1, -1000)]
+    let bounds = DRect(containing: points)
+    XCTAssertEqual(bounds, DRect(min: DVec2(-10, -1000), max: DVec2(0.1, 20)))
+  }
 }

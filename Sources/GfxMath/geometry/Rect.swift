@@ -1,21 +1,18 @@
 import Foundation
 
 /// Axis aligned rect in 2 coordinate space.
-public struct Rect<E: Numeric & Hashable & Comparable>: Equatable, Hashable {
-    public var min: Vector2<E>
-    public var max: Vector2<E> {
-        get {
-            min + Vector2<E>(size)
-        }
-        /*set {
-            size = Size2<E>(max - min)
-        }*/
+public struct Rect<D: Numeric & Hashable & Comparable>: Equatable, Hashable {
+    public typealias Data = D
+
+    public var min: Vector2<Data>
+    public var max: Vector2<Data> {
+        min + Vector2<Data>(size)
     }
 
-    public var size: Size2<E>
+    public var size: Size2<Data>
 
     
-    public var width: E {
+    public var width: Data {
         get {
             size.width
         }
@@ -24,7 +21,7 @@ public struct Rect<E: Numeric & Hashable & Comparable>: Equatable, Hashable {
         }
     }
 
-    public var height: E {
+    public var height: Data {
         get {
             size.height
         }
@@ -33,27 +30,52 @@ public struct Rect<E: Numeric & Hashable & Comparable>: Equatable, Hashable {
         }
     }
 
-    public var area: E {
+    public var area: Data {
         size.width * size.height
     }
 
-    // TODO: maybe implement as protocol as well and don't use Vector2<E> but Vector2Protocol where Vector2Protocol.E == E?
-    public init(min: Vector2<E>, size: Size2<E>) {
+    // TODO: maybe implement as protocol as well and don't use Vector2<Data> but Vector2Protocol where Vector2Protocol.E == E?
+    public init(min: Vector2<Data>, size: Size2<Data>) {
         self.min = min
         self.size = size
     }
 
-    public init(max: Vector2<E>, size: Size2<E>) {
-        self.min = max - Vector2<E>(size)
+    public init(max: Vector2<Data>, size: Size2<Data>) {
+        self.min = max - Vector2<Data>(size)
         self.size = size
     }
 
-    public init(min: Vector2<E>, max: Vector2<E>/*, layout: VectorLayout2<Vector2<E>> = .bottomLeftToTopRight*/) {
+    public init(min: Vector2<Data>, max: Vector2<Data>/*, layout: VectorLayout2<Vector2<Data>> = .bottomLeftToTopRight*/) {
         self.min = min
         self.size = Size2(max - min)
     }
 
-    public var vertices: [Vector2<E>] {
+    /// create a rect containing all given points
+    public init(containing points: [Vector2<Data>]) {
+        var minX: Data? = nil
+        var minY: Data? = nil
+        var maxX: Data? = nil
+        var maxY: Data? = nil
+
+        for point in points {
+            if minX == nil || point.x < minX! {
+                minX = point.x
+            }
+            if minY == nil || point.y < minY! {
+                minY = point.y
+            }
+            if maxX == nil || point.x > maxX! {
+                maxX = point.x
+            }
+            if maxY == nil || point.y > maxY! {
+                maxY = point.y
+            }
+        }
+
+        self.init(min: Vector2(minX ?? 0, minY ?? 0), max: Vector2(maxX ?? 0, maxY ?? 0))
+    }
+
+    public var vertices: [Vector2<Data>] {
         [
             min,
             min + Vector2(size.x, 0),
@@ -62,41 +84,15 @@ public struct Rect<E: Numeric & Hashable & Comparable>: Equatable, Hashable {
         ]
     }
 
-    // TODO: might add set operations as well
-    /*public var topLeft: Vector2<E> {
-        get {
-            Vector2<E>()
-        }
-    }
-
-    // TODO: these calculations need to be redone
-    public var bottomLeft: Vector2<E> {
-        get {
-            return Vector2<E>(topLeft.x, topLeft.y + size.height)
-        }
-    }
-
-    public var bottomRight: Vector2<E> {
-        get {
-            return Vector2<E>(topLeft.x + size.width, topLeft.y + size.height)
-        }
-    }
-
-    public var center: Vector2<E> {
-        get {
-            return Vector2<E>(topLeft.x + size.width / 2, topLeft.y + size.height / 2)
-        }
-    }*/
-
-    public func contains(point: Vector2<E>) -> Bool {
+    public func contains(point: Vector2<Data>) -> Bool {
         return point.x >= min.x && point.x <= max.x && point.y >= min.y && point.y <= max.y
     }
 
-    public func intersects(_ otherRect: Rect<E>) -> Bool {
+    public func intersects(_ otherRect: Rect<Data>) -> Bool {
         return !(min.x > otherRect.max.x || max.x < otherRect.min.x || min.y > otherRect.max.y || max.y < otherRect.min.y)
     }
 
-    public func intersection(with otherRect: Rect<E>) -> Rect<E>? {
+    public func intersection(with otherRect: Rect<Data>) -> Rect<Data>? {
         if intersects(otherRect) {
             return Rect(
                 min: Vector2(Swift.max(min.x, otherRect.min.x), Swift.max(min.y, otherRect.min.y)),
@@ -106,31 +102,31 @@ public struct Rect<E: Numeric & Hashable & Comparable>: Equatable, Hashable {
         return nil
     }
 
-    public mutating func translate(_ amount: Vector2<E>) {
+    public mutating func translate(_ amount: Vector2<Data>) {
         self.min += amount
     }
 
-    public func translated(_ amount: Vector2<E>) -> Self {
+    public func translated(_ amount: Vector2<Data>) -> Self {
         var result = self
         result.translate(amount)
         return result
     }
 }
 
-extension Rect where E: FloatingPoint {
-    public var center: Vector2<E> {
-        min + Vector2<E>(size) / 2
+extension Rect where Data: FloatingPoint {
+    public var center: Vector2<Data> {
+        min + Vector2<Data>(size) / 2
     }
 
-    public init(center: Vector2<E>, size: Size2<E>) {
-        self.init(min: Vector2<E>(center.x - size.width / 2, center.y - size.height / 2), size: size)
+    public init(center: Vector2<Data>, size: Size2<Data>) {
+        self.init(min: Vector2<Data>(center.x - size.width / 2, center.y - size.height / 2), size: size)
     }
     
     /// UNTESTED!
-    public func intersections<L: LineProtocol>(with line: L) -> (min: Vector2<E>, max: Vector2<E>)? where L.VectorProtocol: Vector2Protocol, L.VectorProtocol.Element == E {
+    public func intersections<L: LineProtocol>(with line: L) -> (min: Vector2<Data>, max: Vector2<Data>)? where L.VectorProtocol: Vector2Protocol, L.VectorProtocol.Element == D {
         // this can be generalized for any axis aligned bounding box (also 3d, 4d probably, etc.)
-        var minScale = -E.infinity
-        var maxScale = E.infinity
+        var minScale = -Data.infinity
+        var maxScale = Data.infinity
         for dimension in 0..<2 {
             var newMinScale = (min[dimension] - line.point[dimension]) / line.direction[dimension]
             var newMaxScale = (max[dimension] - line.point[dimension]) / line.direction[dimension]
@@ -147,13 +143,13 @@ extension Rect where E: FloatingPoint {
             }
         }
 
-        return (min: Vector2<E>(line.pointAtScale(minScale)), max: Vector2<E>(line.pointAtScale(maxScale)))
+        return (min: Vector2<Data>(line.pointAtScale(minScale)), max: Vector2<Data>(line.pointAtScale(maxScale)))
     }
 }
 
-extension Rect where E: BinaryFloatingPoint {
+extension Rect where Data: BinaryFloatingPoint {
     public init<O: BinaryFloatingPoint>(_ other: Rect<O>) {
-        self.init(min: Vector2<E>(other.min), max: Vector2<E>(other.max))
+        self.init(min: Vector2<Data>(other.min), max: Vector2<Data>(other.max))
     }
 }
 
