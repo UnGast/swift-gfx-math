@@ -220,7 +220,7 @@ public struct Matrix<E: Numeric & Hashable>: MatrixProtocol {
         self.elements = elements
     }
     
-    @available(unavailable, message: "need to know size of matrix, use init")
+    @available(*, unavailable, message: "need to know size of matrix, use init")
     @inlinable public static var zero: Self {
         fatalError("unavailable, need to specify size")
     }
