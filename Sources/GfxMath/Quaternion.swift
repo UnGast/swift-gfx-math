@@ -121,3 +121,6 @@ public struct Quaternion<E: FloatingPointGenericMath>: Equatable {
     return result
   }
 }
+
+public typealias FQuat = Quaternion<Float>
+public typealias DQuat = Quaternion<Double>
