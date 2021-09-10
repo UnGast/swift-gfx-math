@@ -48,6 +48,7 @@ public extension LineProtocol {
         return point + direction * scale
     }
 
+    /// - Parameter point: A point on the line.
     func scaleAt(_ point: VectorProtocol, accuracy: VectorProtocol.Element = VectorProtocol.Element(vectorComparisonAccuracy)) -> VectorProtocol.Element? {
         var lastScale: VectorProtocol.Element?
         for axis in 0..<direction.count {
@@ -66,6 +67,15 @@ public extension LineProtocol {
             }
         }
         return lastScale 
+    }
+
+    /// - Parameter axis: Index of axis starting at 0. e.g. for 2D x = 0, y = 1
+    func scaleAt(value: VectorProtocol.Element, axis: Int) -> VectorProtocol.Element? {
+        if direction[axis] == 0 {
+            return nil
+        } else {
+            return (value - origin[axis]) / direction[axis]
+        }
     }
 
     func contains(_ point: VectorProtocol, accuracy: VectorProtocol.Element = VectorProtocol.Element(vectorComparisonAccuracy)) -> Bool {
