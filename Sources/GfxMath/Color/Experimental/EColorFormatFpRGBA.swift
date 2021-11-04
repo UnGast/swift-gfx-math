@@ -1,6 +1,6 @@
 
 
-public struct FpRGBAColor<D: BinaryFloatingPoint>: ERGBColor {
+public struct FpRGBAColor<D: BinaryFloatingPoint>: ERGBAColor {
     public typealias DataType = D
 
     public var r: D
