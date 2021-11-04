@@ -1,3 +1,7 @@
+#if canImport(Swim)
+import Swim
+#endif
+
 /// experimental
 public protocol EColor {
     func toOldColorFormat() -> Color

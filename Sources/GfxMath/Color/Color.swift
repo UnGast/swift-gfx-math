@@ -1,6 +1,8 @@
 import Foundation
 
 public struct Color: Hashable, Equatable {
+    public typealias DataType = UInt8
+
     public typealias RGB<T> = (r: T, g: T, b: T)
     public typealias RGBA<T> = (r: T, g: T, b: T, a: T)
     public typealias HSL = (h: Double, s: Double, l: Double)

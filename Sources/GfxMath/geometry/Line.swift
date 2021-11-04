@@ -19,13 +19,13 @@ public extension LineProtocol {
 
     init(origin: VectorProtocol, direction: VectorProtocol) {
         self.init()
-        self.point = origin
+        self.origin = origin
         self.direction = direction.normalized()
     }
 
     init(from point1: VectorProtocol, to point2: VectorProtocol) {
         self.init()
-        self.point = point1
+        self.origin = point1
         self.direction = (point1 - point2).normalized()
     }
 
