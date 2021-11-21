@@ -30,10 +30,10 @@ public enum DTransform2 {
 }
 
 extension Array where Element == DTransform2 {
-  /** applies the transforms in reverse order */
+  /** applies the transforms in the order in which they were added */
   public func transform(point: DVec2) -> DVec2 {
     var result = point
-    for transform in self.reversed() {
+    for transform in self {
       result = transform.transform(point: result)
     }
     return result
