@@ -10,7 +10,7 @@ public protocol FloatingPointGenericMath : FloatingPoint {
   // ...
 }
 
-#if os(Linux) || os(macOS)
+#if !arch(arm64) && (os(Linux) || os(macOS))
 extension Float80 : FloatingPointGenericMath {
   public static func _log(_ x: Float80) -> Float80 { return log(x) }
   public static func _sin(_ x: Float80) -> Float80 { return sin(x) }
