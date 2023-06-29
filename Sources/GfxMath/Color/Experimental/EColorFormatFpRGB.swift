@@ -21,11 +21,11 @@ extension FpRGBColor {
         Color(UInt8(max(0, min(255, r * 255))), UInt8(max(0, min(255, g * 255))), UInt8(max(0, min(255, b * 255))), 255)
     }
 
-    public func toIRGB<D>() -> IRGBColor<D> {
+    public func toIRGB<D2: BinaryInteger>() -> IRGBColor<D2> {
         IRGBColor(
-            r: D(max(0, min(255, r * 255))),
-            g: D(max(0, min(255, g * 255))),
-            b: D(max(0, min(255, b * 255)))
+            r: D2(max(0, min(255, r * 255))),
+            g: D2(max(0, min(255, g * 255))),
+            b: D2(max(0, min(255, b * 255)))
         )
     }
 

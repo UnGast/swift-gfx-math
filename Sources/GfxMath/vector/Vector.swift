@@ -24,9 +24,7 @@ public protocol Vector2Protocol: VectorProtocol {
   var y: Element { get set }
 }
 
-extension Vector2Protocol {
-  public typealias Dimension = Dim_2x1
-
+extension Vector2Protocol where Dimension == Vector2<Element>.Dimension {
   @inlinable public static var zero: Self {
     Self([0, 0])
   }
@@ -75,6 +73,7 @@ where Element: BinaryFloatingPoint, Element.RawSignificand: FixedWidthInteger {
 }
 
 public struct Vector2<E: Numeric & Hashable>: Vector2Protocol {
+  public typealias Dimension = Dim_2x1
   public typealias Element = E
   public let rows: Int = 2
   public let cols: Int = 1
@@ -97,9 +96,7 @@ public protocol Vector3Protocol: VectorProtocol {
 
 }
 
-extension Vector3Protocol {
-  public typealias Dimension = Dim_3x1
-
+extension Vector3Protocol where Dimension == Vector3<Element>.Dimension {
   @inlinable public static var zero: Self {
     Self([0, 0, 0])
   }
@@ -148,6 +145,7 @@ extension Vector3Protocol {
 }
 
 public struct Vector3<E: Numeric & Hashable>: Vector3Protocol {
+  public typealias Dimension = Dim_3x1
   public typealias Element = E
   public let rows: Int = 3
   public let cols: Int = 1
@@ -170,9 +168,7 @@ public protocol Vector4Protocol: VectorProtocol {
 
 }
 
-extension Vector4Protocol {
-  public typealias Dimension = Dim_4x1
-
+extension Vector4Protocol where Dimension == Vector4<Element>.Dimension {
   @inlinable public static var zero: Self {
     Self([0, 0, 0, 0])
   }
@@ -219,6 +215,7 @@ extension Vector4Protocol {
 }
 
 public struct Vector4<E: Numeric & Hashable>: Vector4Protocol {
+  public typealias Dimension = Dim_4x1
   public typealias Element = E
   public let rows: Int = 4
   public let cols: Int = 1
@@ -237,11 +234,12 @@ public struct Vector4<E: Numeric & Hashable>: Vector4Protocol {
   }
 }
 
-extension Matrix4Protocol {
-  @inlinable public static func matmul<VectorProtocol: Vector4Protocol>(_ other: VectorProtocol)
+extension Matrix4Protocol where Element: Hashable {
+  @inlinable public func matmul<VectorProtocol: Vector4Protocol>(_ other: VectorProtocol)
     -> VectorProtocol where Self.Element == VectorProtocol.Element
   {
-    return VectorProtocol(try! self.matmul(other).elements)
+    let result: Matrix<Element> = self.matmul(other)
+    return VectorProtocol(result.elements)
   }
 }
 

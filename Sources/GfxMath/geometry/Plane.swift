@@ -13,7 +13,7 @@ public extension Plane where VectorProtocol.Element: FloatingPoint {
         }
     }
 
-    public init(point: VectorProtocol, normal: VectorProtocol) {
+    init(point: VectorProtocol, normal: VectorProtocol) {
         self.init()
         self.point = point
         self.normal = normal.normalized()

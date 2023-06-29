@@ -128,8 +128,8 @@ extension Rect where Data: FloatingPoint {
         var minScale = -Data.infinity
         var maxScale = Data.infinity
         for dimension in 0..<2 {
-            var newMinScale = (min[dimension] - line.point[dimension]) / line.direction[dimension]
-            var newMaxScale = (max[dimension] - line.point[dimension]) / line.direction[dimension]
+            var newMinScale = (min[dimension] - line.origin[dimension]) / line.direction[dimension]
+            var newMaxScale = (max[dimension] - line.origin[dimension]) / line.direction[dimension]
             if newMinScale > newMaxScale {
                 let tmp = newMinScale
                 newMinScale = newMaxScale
@@ -143,7 +143,7 @@ extension Rect where Data: FloatingPoint {
             }
         }
 
-        return (min: Vector2<Data>(line.pointAtScale(minScale)), max: Vector2<Data>(line.pointAtScale(maxScale)))
+        return (min: Vector2<Data>(line.pointAt(scale: minScale)), max: Vector2<Data>(line.pointAt(scale: maxScale)))
     }
 }
 

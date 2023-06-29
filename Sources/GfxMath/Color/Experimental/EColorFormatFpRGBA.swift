@@ -25,12 +25,12 @@ extension FpRGBAColor {
         Color(UInt8(max(0, min(255, r * 255))), UInt8(max(0, min(255, g * 255))), UInt8(max(0, min(255, b * 255))), UInt8(max(0, min(255, a * 255))))
     }
 
-    public func toIRGBA<D>() -> IRGBAColor<D> {
+    public func toIRGBA<D2: BinaryInteger>() -> IRGBAColor<D2> {
         IRGBAColor(
-            r: D(max(0, min(255, r * 255))),
-            g: D(max(0, min(255, g * 255))),
-            b: D(max(0, min(255, b * 255))),
-            a: D(max(0, min(255, a * 255)))
+            r: D2(max(0, min(255, r * 255))),
+            g: D2(max(0, min(255, g * 255))),
+            b: D2(max(0, min(255, b * 255))),
+            a: D2(max(0, min(255, a * 255)))
         )
     }
 

@@ -21,9 +21,9 @@ public enum DTransform2 {
 
   public func transform(size: DSize2) -> DSize2 {
     switch self {
-    case let .translate(translation):
+    case .translate(_):
       return size
-    case let .scale(scale, origin):
+    case let .scale(scale, _):
       return size * scale.abs()
     }
   }

@@ -4,18 +4,18 @@ public struct LineSegment<V: VectorProtocol> where V.Element: BinaryFloatingPoin
   public var scaleMin: Vector.Element
   public var scaleMax: Vector.Element
   public var start: Vector {
-    line.pointAtScale(scaleMin)
+    line.pointAt(scale: scaleMin)
   }
   public var end: Vector {
-    line.pointAtScale(scaleMax)
+    line.pointAt(scale: scaleMax)
   }
   public var length: Vector.Element {
     (start - end).length
   }
 
-  public var line: AnyLine<Vector>
+  public var line: Line<Vector>
 
-  public init(line: AnyLine<Vector>, scaleMin: Vector.Element, scaleMax: Vector.Element) {
+  public init(line: Line<Vector>, scaleMin: Vector.Element, scaleMax: Vector.Element) {
     var scaleMin = scaleMin
     var scaleMax = scaleMax
 
@@ -31,9 +31,9 @@ public struct LineSegment<V: VectorProtocol> where V.Element: BinaryFloatingPoin
   }
 
   public init(start: Vector, end: Vector) {
-    let line = AnyLine(from: start, to: end)
-    var scaleMin = line.scaleAt(start)!
-    var scaleMax = line.scaleAt(end)!
+    let line = Line(from: start, to: end)
+    let scaleMin = line.scaleAt(start)!
+    let scaleMax = line.scaleAt(end)!
     self.init(line: line, scaleMin: scaleMin, scaleMax: scaleMax)
   }
 }

@@ -34,7 +34,7 @@ public struct Triangle<V: VectorProtocol> {
   }
 }
 
-extension Triangle where V: Vector2Protocol, V.Element: BinaryFloatingPoint {
+extension Triangle where V: Vector2Protocol, V.Element: BinaryFloatingPoint, V.Dimension == Dim_2x1 {
   public var area: V.Element {
     let v1 = vertexB - vertexA
     let v2 = vertexC - vertexA

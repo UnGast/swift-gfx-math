@@ -1,7 +1,6 @@
 import Foundation
 
-public protocol MatrixProtocol: Sequence, Equatable, CustomStringConvertible, Hashable {
-    associatedtype Element: Numeric
+public protocol MatrixProtocol: Sequence, Equatable, CustomStringConvertible, Hashable where Element: Numeric {
     var rows: Int { get }
     var cols: Int { get }
     var elements: [Element] { get set }
@@ -42,7 +41,7 @@ public extension MatrixProtocol {
     }
 
     // TODO: there might be a more efficient way to transpose
-    @inlinable public var transposed: Self {
+    @inlinable var transposed: Self {
         var matrix = clone() // TODO: maybe have some clone function that does not clone elements
        
         for rIndex in 0..<self.rows {
@@ -261,8 +260,7 @@ public protocol Matrix4Protocol: MatrixProtocol {
 }
 
 public extension Matrix4Protocol {
-
-    public init<M3: Matrix3Protocol>(topLeft: M3, rest: Self = .identity) where M3.Element == Element {
+    init<M3: Matrix3Protocol>(topLeft: M3, rest: Self = .identity) where M3.Element == Element {
         self.init([
             topLeft[0, 0], topLeft[0, 1], topLeft[0, 2], rest[0, 3],
             topLeft[1, 0], topLeft[1, 1], topLeft[1, 2], rest[1, 3],
@@ -375,8 +373,8 @@ public extension Matrix4Protocol where Element: FloatingPointGenericMath {
     }
 
     // TODO: the following functions might be specific to openGL, maybe put those in the GLGraphicsMath package
-    @inlinable static func viewTransformation<V: Vector3Protocol>(up: V, right: V, front: V, translation: V) -> Self where V.Element == Self.Element {
-        return try! Self([
+    @inlinable static func viewTransformation<V: Vector3Protocol>(up: V, right: V, front: V, translation: V) -> Self where V.Element == Self.Element, V.Dimension == Dim_3x1 {
+        return Self([
             right.x, right.y, right.z, 0,
             up.x, up.y, up.z, 0,
             front.x, front.y, front.z, 0,
@@ -435,7 +433,7 @@ public struct Matrix4<E: Numeric & Hashable>: Matrix4Protocol {
 
 // TODO: might replace this or remove this / current function of this is to simply remove throws
 @inlinable public func * <E: Numeric>(lhs: Matrix4<E>, rhs: Matrix4<E>) -> Matrix4<E> {
-    return try! lhs.matmul(rhs)
+    return lhs.matmul(rhs)
 }
 
 public typealias FMat4 = Matrix4<Float>
