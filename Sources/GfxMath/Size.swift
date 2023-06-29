@@ -25,6 +25,7 @@ extension Size2Protocol {
 }
 
 public struct Size2<E: Numeric & Hashable>: Size2Protocol {
+  public typealias Dimension = Dim_2x1
   public typealias Element = E
   public let rows: Int = 2
   public let cols: Int = 1

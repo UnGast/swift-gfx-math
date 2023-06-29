@@ -202,7 +202,7 @@ extension VectorProtocol where Element: FloatingPoint {
   }
 }
 
-extension Vector3Protocol where Element: FloatingPointGenericMath {
+extension Vector3Protocol where Element: FloatingPointGenericMath, Dimension == Dim_3x1 {
   /// - Returns 0 to pi (positive only)
   @inlinable public func absAngle(to otherVector: Self) -> Element {
     let angle = acos(normalized().dot(otherVector.normalized()))

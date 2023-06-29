@@ -30,7 +30,7 @@ public extension LineProtocol {
     }
 
     var debugDescription: String {
-        "LineProtocol x = (\(point)) + scale * (\(direction))"
+        "LineProtocol x = (\(origin)) + scale * (\(direction))"
     }
 
     var point: VectorProtocol {
@@ -45,7 +45,7 @@ public extension LineProtocol {
     }
 
     func pointAt(scale: VectorProtocol.Element) -> VectorProtocol {
-        return point + direction * scale
+        return origin + direction * scale
     }
 
     /// - Parameter point: A point on the line.
@@ -54,11 +54,11 @@ public extension LineProtocol {
         for axis in 0..<direction.count {
             if direction[axis] == 0 {
                 // TODO: maybe need accuracy here too
-                if abs(self.point[axis] - point[axis]) > accuracy {
+                if abs(self.origin[axis] - origin[axis]) > accuracy {
                     return nil
                 }
             } else {
-                let scale = (point[axis] - self.point[axis]) / direction[axis]
+                let scale = (origin[axis] - self.origin[axis]) / direction[axis]
                 if lastScale == nil {
                     lastScale = scale
                 } else if abs(scale - lastScale!) > accuracy {
@@ -95,7 +95,7 @@ public extension LineProtocol {
     }
 }
 
-public extension LineProtocol where VectorProtocol: Vector2Protocol {
+public extension LineProtocol where VectorProtocol: Vector2Protocol, VectorProtocol.Dimension == Dim_2x1 {
     // TODO: what to return on identical
     /// - Returns: nil if parallel, self.point when identical, intersection point if intersecting
     func intersect<O: LineProtocol>(line otherLine: O) -> VectorProtocol? where O.VectorProtocol == VectorProtocol {
@@ -106,16 +106,16 @@ public extension LineProtocol where VectorProtocol: Vector2Protocol {
         
         // TODO: which value to use as accuracy?
         if slope1 == slope2 || abs(slope1 - slope2) < VectorProtocol.Element(0.1) {
-            if contains(otherLine.point) {
-                return point
+            if contains(otherLine.origin) {
+                return origin
             } else {
                 return nil
             }
         }
         
-        let scale1 = (otherLine.point - self.point).cross(otherLine.direction) / self.direction.cross(otherLine.direction)
+        let scale1 = (otherLine.origin - self.origin).cross(otherLine.direction) / self.direction.cross(otherLine.direction)
 
-        return pointAtScale(scale1)
+        return pointAt(scale: scale1)
     }
 }
 
@@ -125,8 +125,8 @@ public extension LineProtocol where VectorProtocol: Vector3Protocol {
             return nil
         }
 
-        let s = (plane.elevation - plane.normal.dot(point)) / (plane.normal.dot(direction))
-        return pointAtScale(s)
+        let s = (plane.elevation - plane.normal.dot(origin)) / (plane.normal.dot(direction))
+        return pointAt(scale: s)
     }
 }
 
